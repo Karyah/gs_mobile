@@ -1,14 +1,14 @@
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 
 
-export default function LabelInput(props){
+export default function LabelInput({label, value, onChange}){
   return(
   <View style = {styles.div}>
-    <Text style={{color:'#BFFFC9'}}>{props.label}</Text>
+    <Text style={{color:'#BFFFC9'}}>{label}</Text>
     <TextInput 
     style={styles.textInput}
-    value={props.value}
-    onChangeText={(param)=> props.onChange(param)}>
+    value={value}
+    onChangeText={(param) => onChange(param)}>
     </TextInput>
   </View>)
   ;

@@ -1,10 +1,10 @@
 import {View, Text, StyleSheet, Pressable, Image} from 'react-native';
 import LabelInput from '../components/LabelInput';
 import Constants from 'expo-constants';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
-export default function CadastroUsuario({navigation}){
-
+export default function CadastroUsuario({navigation}) {
+  const [usuario, setUsuario] = React.useState();
   const [nome, setNome] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [senha, setSenha] = React.useState('');
@@ -12,33 +12,37 @@ export default function CadastroUsuario({navigation}){
   const [cpf, setCpf] = React.useState('');
 
 
-  const [usuario, setUsuario] = React.useState({
-    nomeUsuario:nome,
-    emailUsuario:email,
-    senhaUsuario:senha,
-    telefoneUsuario:telefone,
-    cpfUsuario:cpf
-  })
-
-  const cadastro =  ()=>{
-
-  setUsuario(usuario)
-
-  console.log(usuario)
-
-  fetch('http://localhost:8080/usuario', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(usuario)
-    })
-      .then(resposta => resposta.json())
-        .then((json) => console.log(json))
-        .catch((error) => console.error(error));
   
+  const cadastrar = () => {
+    const result = {
+      "nomeUsuario": nome,
+      "emailUsuario": email,
+      "senhaUsuario": senha,
+      "telefoneUsuario": telefone,
+      "cpfUsuario": cpf,
+      "ativoUsuario":  true
+    }
+
+    setUsuario(result);
   }
+
+  const request = useCallback(async () => {
+
+    await fetch('http://localhost:8080/usuario', {method: "POST", mode: 'cors', headers: {
+      // "Authorization": 'Basic ' + Buffer.from("nome" + ":" + "senha").toString('base64'),
+      'Access-Control-Allow-Origin': "*",
+      'Access-Control-Allow-Headers': "*",
+      "Content-Type": "application/json"
+    },
+      body: JSON.stringify(usuario)
+    }) 
+  }, [usuario])
+
+  useEffect(() => {
+    if(!usuario) return;
+    request()
+    
+  }, [usuario])
   
   return(
     <View style={styles.div}>
@@ -49,7 +53,7 @@ export default function CadastroUsuario({navigation}){
     <LabelInput label= 'Telefone'  value={telefone} onChange= {setTelefone}/>
     <LabelInput label= 'Cpf'  value={cpf} onChange= {setCpf}/>
 
-    <Pressable style={styles.botao} onPress={cadastro}><Text style={{color:'#BFFFC9'}}>Cadastrar</Text></Pressable>
+    <Pressable style={styles.botao} onPress={cadastrar}><Text style={{color:'#BFFFC9'}}>Cadastrar</Text></Pressable>
     <View style={{alignItems:'center', margin:'5%'}}>
      <Text>Já possui uma conta? </Text>
       <Pressable onPress={()=>navigation.navigate('Login')}><Text style={{color:'#BFFFC9'}}>Logar</Text></Pressable>

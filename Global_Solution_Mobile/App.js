@@ -1,14 +1,16 @@
-import {NavigationContainer} from '@react-navigation/native';
+
 import Routes from './routes'
+import MeuPerfil from './pages/MeuPerfil';
+import CadastroUsuario from './pages/CadastroUsuario';
 
 
 export default function App() {
   return (
     <>
-
-    <NavigationContainer>
+      <CadastroUsuario></CadastroUsuario>
+    {/* <NavigationContainer>
       <Routes/>
-    </NavigationContainer>
+    </NavigationContainer> */}
     </>
   
   );
