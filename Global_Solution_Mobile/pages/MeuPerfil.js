@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Cabecalho from '../components/Cabecalho';
 import {Buffer} from 'buffer';
+import Usuario from '../components/Usuario'
 
 export default function MeuPerfil(){
   const [usuario, setUsuario] = useState(null);
@@ -29,7 +30,11 @@ export default function MeuPerfil(){
     <Cabecalho titulo='Meu Perfil'/>
     <View style={styles.div}>
       <View>
-       
+        <Usuario nome={usuario.nome}
+          email={usuario.email}
+          senha={usuario.senha}
+          telefone={usuario.telefone}
+          cpf={usuario.cpf}></Usuario>
       </View>
     </View>
     </>
